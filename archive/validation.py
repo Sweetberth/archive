@@ -36,7 +36,7 @@ def validate_id(value):
 
     Returns (bool, str).
     """
-    h
+
     raise NotImplementedError("validate_id")
 
 
@@ -48,7 +48,11 @@ def validate_title(value):
 
     Returns (bool, str).
     """
-    raise NotImplementedError("validate_title")
+    if len(value.strip()) < 3:
+            return False, "Please input a title with at least 3 characters"
+        else:
+            return True, "Valid title"  
+        raise NotImplementedError("validate_title")
 
 
 def validate_city(value):
@@ -75,6 +79,11 @@ def validate_year(value):
 
     Returns (bool, str).
     """
+    if type(value) != int:
+        return False, "Please input a numerical year"
+    if value < 1100 or value > 2026:
+        return False, "Please input a year between 1100 and 2026"
+    return True, "Valid year"
     raise NotImplementedError("validate_year")
 
 
