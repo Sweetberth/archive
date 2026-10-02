@@ -4,7 +4,7 @@ def validate_id(value):
     Valid:   "MS001", "MS742"
     Invalid: "MS1", "MS0012", "ms001", "XX001", "", "MS00A"
 
-    Returns (bool, str).
+    Returns (bool, str). Testing something. this to be removed
     """
 
     if len(value) != 5 or value[0] != "M" or value[1] != "S":
