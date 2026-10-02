@@ -85,8 +85,8 @@ def validate_year(value):
     """
     if type(value) != int:
         return False, "Please input a numerical year"
-    if value < 1100 or value > 2026:
-        return False, "Please input a year between 1100 and 2026"
+    if value < 1100 or value > 1900:
+        return False, "Please input a year between 1100 and 1900"
     return True, "Valid year"
 
 
