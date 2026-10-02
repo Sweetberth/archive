@@ -52,7 +52,6 @@ def validate_title(value):
             return False, "Please input a title with at least 3 characters"
         else:
             return True, "Valid title"  
-        raise NotImplementedError("validate_title")
 
 
 def validate_city(value):
@@ -64,7 +63,12 @@ def validate_city(value):
 
     Returns (bool, str).
     """
-    raise NotImplementedError("validate_city")
+    if not value:
+        return False, "Please input a city"
+    for i in range(0, len(KNOWN_CITIES)):
+        if KNOWN_CITIES[i]== value:
+            return True, "City exists"
+    return False, "Unknown City"
 
 
 def validate_year(value):
@@ -84,7 +88,6 @@ def validate_year(value):
     if value < 1100 or value > 2026:
         return False, "Please input a year between 1100 and 2026"
     return True, "Valid year"
-    raise NotImplementedError("validate_year")
 
 
 def validate_condition(value):
