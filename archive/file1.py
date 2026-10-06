@@ -1,13 +1,36 @@
-def validate_city(value):
-    """A city must be present and appear in KNOWN_CITIES.
+from archive.validation import (
+    validate_id,
+    validate_title,
+    validate_city,
+    validate_year,
+    validate_condition,
+)
 
-    Comparison is case-insensitive: "timbuktu" is acceptable.
-    "Kano" is not in our list, so it is rejected — and that is a real
-    decision with a cost. Write about it in your README.
 
-    Returns (bool, str).
+def validate_record(record):
+    """Validate a whole record dictionary.
+
+    record is a dict with the keys: id, title, city, year, condition.
+
+    Returns a LIST of reasons the record is invalid — one string per broken
+    rule, in this field order: id, title, city, year, condition.
+    An empty list means the record is valid.
+
+    Do not re-write the rules here. Call the five functions above.
     """
-    if not value:
-        return False, "Please input a city"
-    
-    raise NotImplementedError("validate_city")
+    if not isinstance(record, dict):
+        return ["Record must be a dictionary"]
+
+    reasons = []
+    for field_name, validator in [
+        ("id", validate_id),
+        ("title", validate_title),
+        ("city", validate_city),
+        ("year", validate_year),
+        ("condition", validate_condition),
+    ]:
+        valid, reason = validator(record.get(field_name, ""))
+        if not valid:
+            reasons.append(reason)
+
+    return reasons

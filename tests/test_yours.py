@@ -76,7 +76,62 @@ def test_condition_case():
 #   EXTREME    1100 and 1900 — valid, sitting exactly on the edge
 #   BOUNDARY   1099 and 1901 — one step outside, must be rejected
 #
-# TODO: write them here.
+def test_year_normal():
+    """NORMAL — a year from the middle of the allowed range."""
+    assert validate_year("1655")[0] is True
+
+
+def test_year_abnormal():
+    """ABNORMAL — something that is not a year at all."""
+    assert validate_year("c.1590")[0] is False
+
+
+def test_year_extreme_min():
+    """EXTREME — accepted lower bound."""
+    assert validate_year("1100")[0] is True
+
+
+def test_year_extreme_max():
+    """EXTREME — accepted upper bound."""
+    assert validate_year("1900")[0] is True
+
+
+def test_year_boundary_low():
+    """BOUNDARY — just below the allowed range."""
+    assert validate_year("1099")[0] is False
+
+
+def test_year_boundary_high():
+    """BOUNDARY — just above the allowed range."""
+    assert validate_year("1901")[0] is False
+
+
+def test_city_case_insensitive():
+    """Cities are compared case-insensitively."""
+    assert validate_city("timbuktu")[0] is True
+
+
+def test_id_case_sensitive():
+    """The MS prefix must be uppercase exactly."""
+    assert validate_id("ms001")[0] is False
+
+
+def test_title_whitespace_only_rejected():
+    """Whitespace-only titles are still empty after stripping."""
+    assert validate_title("   ")[0] is False
+
+
+def test_record_multiple_faults():
+    """A record should report every invalid field, in field order."""
+    bad = {
+        "id": "ms001",
+        "title": "Ab",
+        "city": "Kano",
+        "year": "1901",
+        "condition": "excellent",
+    }
+    reasons = validate_record(bad)
+    assert len(reasons) == 5
 
 
 # ============================================================== your tests
