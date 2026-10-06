@@ -79,7 +79,7 @@ def validate_year(value):
     Invalid: "", "   ", "c.1590", "sixteen fifty", "1099", "1901", "2087"
 
     Note that "2087" parses perfectly well as a number. It is still wrong.
-    
+
     That is the whole point of a range check.
 
     Returns (bool, str).
@@ -108,7 +108,7 @@ def validate_record(record):
     record is a dict with the keys: id, title, city, year, condition.
 
     Returns a LIST of reasons the record is invalid — one string per broken
-    rule, in this field order: id, title, city, year, condition.
+    rule, in this field order: id, title, city, year, condition
     An empty list means the record is valid.
 
     Do not re-write the rules here. Call the five functions above.
