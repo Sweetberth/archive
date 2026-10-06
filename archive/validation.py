@@ -99,7 +99,13 @@ def validate_condition(value):
 
     Returns (bool, str).
     """
-    raise NotImplementedError("validate_condition")
+
+    if value == "fragile" or "Good" or "Fair":
+        
+        return True, "Valid"
+
+    else:
+        return False, "Invalid"
 
 
 def validate_record(record):
