@@ -19,7 +19,14 @@ def count_before(records, year):
 
     Returns int.
     """
-    raise NotImplementedError("count_before")
+
+    pau = int(records)
+    array = []
+
+    if records < year:
+        array.append(records)
+
+    return array
 
 
 def find_by_city(records, city):
@@ -29,8 +36,13 @@ def find_by_city(records, city):
     `records`.
 
     Returns list of dicts (empty list if none match).
+
     """
-    raise NotImplementedError("find_by_city")
+    record = []
+    if records == city:
+        record.append(records)
+
+    return record
 
 
 def oldest(records):
