@@ -109,7 +109,7 @@ def validate_record(record):
 
     Returns a LIST of reasons the record is invalid — one string per broken
     rule, in this field order: id, title, city, year, condition
-    An empty list means the record is valid
+    An empty list means the record is valid.
 
     Do not re-write the rules here. Call the five functions above.
     """
