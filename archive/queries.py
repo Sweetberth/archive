@@ -19,7 +19,14 @@ def count_before(records, year):
 
     Returns int.
     """
-    raise NotImplementedError("count_before")
+    count = 0
+    for record in records:
+        try:
+            if int(str(record["year"])) < year:
+                count += 1
+        except (TypeError, ValueError, KeyError):
+            continue
+    return count
 
 
 def find_by_city(records, city):
@@ -30,7 +37,12 @@ def find_by_city(records, city):
 
     Returns list of dicts (empty list if none match).
     """
-    raise NotImplementedError("find_by_city")
+    target = str(city).strip().lower()
+    matches = []
+    for record in records:
+        if str(record.get("city", "")).strip().lower() == target:
+            matches.append(record)
+    return matches
 
 
 def oldest(records):
@@ -43,7 +55,19 @@ def oldest(records):
 
     Returns dict or None.
     """
-    raise NotImplementedError("oldest")
+    if not records:
+        return None
+
+    oldest_record = records[0]
+    oldest_year = int(str(oldest_record["year"]))
+
+    for record in records[1:]:
+        year = int(str(record["year"]))
+        if year < oldest_year:
+            oldest_record = record
+            oldest_year = year
+
+    return oldest_record
 
 
 def cities_summary(records):
@@ -56,4 +80,10 @@ def cities_summary(records):
 
     Returns dict.
     """
-    raise NotImplementedError("cities_summary")
+    summary = {}
+    for record in records:
+        city = record.get("city")
+        if city is None:
+            continue
+        summary[city] = summary.get(city, 0) + 1
+    return summary
