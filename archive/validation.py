@@ -36,8 +36,14 @@ def validate_id(value):
 
     Returns (bool, str).
     """
+    if value is None:
+        return False, "ID is missing"
 
-    raise NotImplementedError("validate_id")
+    text = str(value).strip()
+    if len(text) != 5 or not text.startswith("MS") or not text[2:].isdigit():
+        return False, "ID must be in the form MS###"
+
+    return True, ""
 
 
 def validate_title(value):
@@ -48,10 +54,14 @@ def validate_title(value):
 
     Returns (bool, str).
     """
-    if len(value.strip()) < 3:
-            return False, "Please input a title with at least 3 characters"
-        else:
-            return True, "Valid title"  
+    if value is None:
+        return False, "Title is missing"
+
+    text = str(value).strip()
+    if len(text) < 3:
+        return False, "Title must be at least 3 characters"
+
+    return True, ""
 
 
 def validate_city(value):
@@ -63,12 +73,19 @@ def validate_city(value):
 
     Returns (bool, str).
     """
-    if not value:
-        return False, "Please input a city"
-    for i in range(0, len(KNOWN_CITIES)):
-        if KNOWN_CITIES[i]== value:
-            return True, "City exists"
-    return False, "Unknown City"
+    if value is None:
+        return False, "City is missing"
+
+    text = str(value).strip()
+    if not text:
+        return False, "City is missing"
+
+    normalized = text.lower()
+    for city in KNOWN_CITIES:
+        if city.lower() == normalized:
+            return True, ""
+
+    return False, "City is not one of the known archive cities"
 
 
 def validate_year(value):
@@ -84,11 +101,22 @@ def validate_year(value):
 
     Returns (bool, str).
     """
-    if type(value) != int:
-        return False, "Please input a numerical year"
-    if value < 1100 or value > 1900:
-        return False, "Please input a year between 1100 and 1900"
-    return True, "Valid year"
+    if value is None:
+        return False, "Year is missing"
+
+    text = str(value).strip()
+    if not text:
+        return False, "Year is missing"
+
+    try:
+        year = int(text)
+    except (TypeError, ValueError):
+        return False, "Year must be a whole number"
+
+    if year < MIN_YEAR or year > MAX_YEAR:
+        return False, "Year must be between 1100 and 1900"
+
+    return True, ""
 
 
 def validate_condition(value):
@@ -99,7 +127,17 @@ def validate_condition(value):
 
     Returns (bool, str).
     """
-    raise NotImplementedError("validate_condition")
+    if value is None:
+        return False, "Condition is missing"
+
+    text = str(value).strip().lower()
+    if not text:
+        return False, "Condition is missing"
+
+    if text not in VALID_CONDITIONS:
+        return False, "Condition must be fragile, fair, or good"
+
+    return True, ""
 
 
 def validate_record(record):
@@ -113,27 +151,19 @@ def validate_record(record):
 
     Do not re-write the rules here. Call the five functions above.
     """
+    if not isinstance(record, dict):
+        return ["Record must be a dictionary"]
 
     reasons = []
+    for field_name, validator in [
+        ("id", validate_id),
+        ("title", validate_title),
+        ("city", validate_city),
+        ("year", validate_year),
+        ("condition", validate_condition),
+    ]:
+        valid, reason = validator(record.get(field_name, ""))
+        if not valid:
+            reasons.append(reason)
 
-    valid_id, id_reason = validate_id(record["id"])
-    if not valid_id:
-        reasons.append(id_reason)
-
-    valid_title, title_reason = validate_title(record["title"])
-    if not valid_title:
-        reasons.append(title_reason)
-
-    valid_city, city_reason = validate_city(record["city"])
-    if not valid_city:
-        reasons.append(city_reason)
-        
-    valid_year, year_reason = validate_year(record["year"])
-    if not valid_year:
-        reasons.append(year_reason)
-        
-    valid_condition, condition_reason = validate_condition(record["condition"])
-    if not valid_condition:
-        reasons.append(condition_reason)
-        
     return reasons
