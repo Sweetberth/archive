@@ -78,7 +78,8 @@ def validate_year(value):
     Valid:   "1655", "1100", "1900"
     Invalid: "", "   ", "c.1590", "sixteen fifty", "1099", "1901", "2087"
 
-    Note that "2087" parses perfectly well as a number. It is still wrong
+    Note that "2087" parses perfectly well as a number. It is still wrong.
+    
     That is the whole point of a range check.
 
     Returns (bool, str).
